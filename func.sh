@@ -6,7 +6,7 @@ map_image() {
 		echo "ERROR testing kpartx"
 		return 1
 	fi
-	loop_dev=`kpartx -l $sdcard | grep 49152 | sed s/"\// "/g | awk '{print $6}'`
+	loop_dev=`kpartx -l $sdcard | grep "${storage_offset}" | sed s/"\// "/g | awk '{print $6}'`
 	loop_mapp="/dev/mapper/${loop_dev}p"
         sleep 1
 	kpartx -a -s ${sdcard} > /dev/null 2>&1
@@ -45,7 +45,7 @@ format_image_part() {
 		echo "ERROR testing kpartx"
 		return 1
 	fi
-	loop_dev=`kpartx -l $sdcard | grep 49152 | sed s/"\// "/g | awk '{print $6}'`
+	loop_dev=`kpartx -l $sdcard | grep "${storage_offset}" | sed s/"\// "/g | awk '{print $6}'`
 	loop_mapp="/dev/mapper/${loop_dev}p${1}"
         sleep 1
         

@@ -39,12 +39,12 @@ if [ "${system_start}" = "" ] || [ "${userdata_start}" = "" ] || [ "${cache_star
 	exit 1
 fi
 if [ "${dualb}" = "" ]; then
-	if [ ! "${system_start}" = "49152" ]; then
+	if [ ! "${system_start}" = "${storage_offset}" ]; then
 		echo "Bad SDCard partition structure (start) !"
 		exit 1
 	fi
 else
-	if [ ! "${storage_start}" = "49152" ]; then
+	if [ ! "${storage_start}" = "${storage_offset}" ]; then
 		echo "Bad SDCard partition structure (start)!"
 		exit 1
 	fi

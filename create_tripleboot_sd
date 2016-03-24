@@ -85,7 +85,7 @@ fi
 # ** calculate new partitions sizes **
 
 _sz=$(expr $storage_size \* 2048)
-nstorage_start=49152
+nstorage_start=${storage_offset}
 nstorage_end=$(expr $nstorage_start + $_sz - 1)
 
 _sz=$(expr $system_size \* 2048)

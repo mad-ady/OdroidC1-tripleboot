@@ -51,7 +51,7 @@ fi
 if [ "${dualb}" = "" ]; then
 	echo "Bad SDCard partition structure 2!"
 else
-	if [ ! "${storage_start}" = "49152" ]; then
+	if [ ! "${storage_start}" = "${storage_offset}" ]; then
 		echo "Bad SDCard partition structure 3!"
 		exit 1
 	fi
