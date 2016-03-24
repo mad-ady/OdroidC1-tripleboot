@@ -10,7 +10,7 @@
 # For other scripts it can also be the image name                *
 # IMAGE MUST BE PREPARED WITH "create_tripleboot_sd" SCRIPT      *
 # ****************************************************************
-sdcard="/dev/sdX"
+sdcard="/dev/loop0"
 #sdcard="/home/LoBo2_Razno/Odroid/images/OpenELEC-Odroid-C1-5.0.5.0.img"
 #sdcard="ubuntu-14.04.2lts-lubuntu-odroid-c1-20150401.img"
 
@@ -74,6 +74,18 @@ oelec_size=1024     # OpenELEC user data partition or SWAP partition
 #userdata_size=1024
 #cache_size=384
 #oelec_size=512
+
+# *********************************************************
+# Start offset of storage partition (as reported by fdisk)*
+# C1+ has 49152                                           *
+# C2  has 65536                                           *
+# Select the correct value based on your board type       *
+# ------------------------------------------------------- *
+# *********************************************************
+# Uncomment below for C1
+#storage_offset=49152
+# Uncomment below for C2
+storage_offset=65536
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # ==== P A R A M E T E R S =======================================
