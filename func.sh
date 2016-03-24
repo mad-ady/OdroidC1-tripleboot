@@ -275,7 +275,13 @@ get_partstruct() {
     echo "Analyzing sd card ..."
     ncache="4"
 
-    dualb=`fdisk -l $sdcard | grep ${sdcard}5 | awk '{print $2}'`
+    #if it's a loop device, partitions look like /dev/loop0p1. Kernel must be booted with loop.max_part=15
+    pprefix=""
+    if [[ $sdcard == *"/dev/loop"* ]]; then
+	pprefix="p";
+    fi
+
+    dualb=`fdisk -l $sdcard | grep ${sdcard}${pprefix}5 | awk '{print $2}'`
 
     # Calculate partitions offsets and sizes
     sdcard_part=`fdisk -l $sdcard | grep Linux | awk '{print $1}'`
@@ -285,35 +291,35 @@ get_partstruct() {
     fi
     sdcard_end=$(expr $sdcard_sect - 1024)
 
-    storage_start=`fdisk -l $sdcard | grep ${sdcard}1 | awk '{print $2}'`
-    storage_end=`fdisk -l $sdcard | grep ${sdcard}1 | awk '{print $3}'`
+    storage_start=`fdisk -l $sdcard | grep ${sdcard}${pprefix}1 | awk '{print $2}'`
+    storage_end=`fdisk -l $sdcard | grep ${sdcard}${pprefix}1 | awk '{print $3}'`
     storage_size=$(( ($storage_end - $storage_start + 1) / 2048 ))
     kstorage_size=$(( ($storage_end - $storage_start + 1) / 2 ))
 
-    system_start=`fdisk -l $sdcard | grep ${sdcard}2 | awk '{print $2}'`
-    system_end=`fdisk -l $sdcard | grep ${sdcard}2 | awk '{print $3}'`
+    system_start=`fdisk -l $sdcard | grep ${sdcard}${pprefix}2 | awk '{print $2}'`
+    system_end=`fdisk -l $sdcard | grep ${sdcard}${pprefix}2 | awk '{print $3}'`
     system_size=$(( ($system_end - $system_start + 1) / 2048 ))
     ksystem_size=$(( ($system_end - $system_start + 1) / 2 ))
 
-    userdata_start=`fdisk -l $sdcard | grep ${sdcard}3 | awk '{print $2}'`
-    userdata_end=`fdisk -l $sdcard | grep ${sdcard}3 | awk '{print $3}'`
+    userdata_start=`fdisk -l $sdcard | grep ${sdcard}${pprefix}3 | awk '{print $2}'`
+    userdata_end=`fdisk -l $sdcard | grep ${sdcard}${pprefix}3 | awk '{print $3}'`
     userdata_size=$(( ($userdata_end - $userdata_start + 1) / 2048 ))
     kuserdata_size=$(( ($userdata_end - $userdata_start + 1) / 2 ))
 
     if [ "${dualb}" = "" ]; then
-	    cache_start=`fdisk -l $sdcard | grep ${sdcard}4 | awk '{print $2}'`
-	    cache_end=`fdisk -l $sdcard | grep ${sdcard}4 | awk '{print $3}'`
+	    cache_start=`fdisk -l $sdcard | grep ${sdcard}${pprefix}4 | awk '{print $2}'`
+	    cache_end=`fdisk -l $sdcard | grep ${sdcard}${pprefix}4 | awk '{print $3}'`
     else
-	    cache_start=`fdisk -l $sdcard | grep ${sdcard}5 | awk '{print $2}'`
-	    cache_end=`fdisk -l $sdcard | grep ${sdcard}5 | awk '{print $3}'`
+	    cache_start=`fdisk -l $sdcard | grep ${sdcard}${pprefix}5 | awk '{print $2}'`
+	    cache_end=`fdisk -l $sdcard | grep ${sdcard}${pprefix}5 | awk '{print $3}'`
 	    
-	    oelec_start=`fdisk -l $sdcard | grep ${sdcard}6 | awk '{print $2}'`
-	    oelec_end=`fdisk -l $sdcard | grep ${sdcard}6 | awk '{print $3}'`
+	    oelec_start=`fdisk -l $sdcard | grep ${sdcard}${pprefix}6 | awk '{print $2}'`
+	    oelec_end=`fdisk -l $sdcard | grep ${sdcard}${pprefix}6 | awk '{print $3}'`
 	    oelec_size=$(( ($oelec_end - $oelec_start + 1) / 2048 ))
 	    koelec_size=$(( ($oelec_end - $oelec_start + 1) / 2 ))
 
-	    linux_start=`fdisk -l $sdcard | grep ${sdcard}7 | awk '{print $2}'`
-	    linux_end=`fdisk -l $sdcard | grep ${sdcard}7 | awk '{print $3}'`
+	    linux_start=`fdisk -l $sdcard | grep ${sdcard}${pprefix}7 | awk '{print $2}'`
+	    linux_end=`fdisk -l $sdcard | grep ${sdcard}${pprefix}7 | awk '{print $3}'`
 	    linux_size=$(( ($linux_end - $linux_start + 1) / 2048 ))
 	    klinux_size=$(( ($linux_end - $linux_start + 1) / 2 ))
 	    ncache="5"
