@@ -101,7 +101,7 @@ check_sdcard() {
 	ISREMOVABLE=`udevadm info -a -n ${sdcard} | grep -o "ATTR{removable}==\"1\""`
 	if [ ! "${ISREMOVABLE}" = "ATTR{removable}==\"1\"" ] ; then
 		echo "${sdcard} IS NOT REMOVABLE DRIVE !, Exiting."
-		return 1
+#		return 1
 	fi
 
 	local _sdok=`fdisk -l $sdcard  2> /dev/null | grep Disk`
